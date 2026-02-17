@@ -6,7 +6,8 @@ InferenceX™ (formerly InferenceMAX) runs our suite of benchmarks every night, 
 > Only [SemiAnalysisAI/InferenceX](https://github.com/SemiAnalysisAI/InferenceX) repo contains the Official InferenceX™ result, all other forks & repos are Unofficial. The benchmark setup & quality of machines/clouds in unofficial repos may be differ leading to subpar benchmarking. Unofficial must be explicitly labelled as Unofficial.
 > Forks may not remove this disclaimer
 
-[Full Article Write Up for InferenceMAXv1](https://newsletter.semianalysis.com/p/inferencemax-open-source-inference)
+[Full Article Write Up for InferenceXv2](https://newsletter.semianalysis.com/p/inferencex-v2-nvidia-blackwell-vs)
+[Full Article Write Up for InferenceXv1](https://newsletter.semianalysis.com/p/inferencemax-open-source-inference)
 
 
 <img width="1627" height="1022" alt="CleanShot 2026-02-04 at 15 26 09" src="https://github.com/user-attachments/assets/65110e16-7590-424f-884d-12876d9e8f3e" />

@@ -37,18 +37,3 @@ Finally, we’re grateful to Crusoe, CoreWeave, Nebius, TensorWave, Oracle and T
 
 “The industry needs many public, reproducible benchmarks of inference performance. We’re excited to collaborate with InferenceMAX™ from the vLLM team. More diverse workloads and scenarios that everyone can trust and reference will help the ecosystem move forward. Fair, transparent measurements drive progress across every layer of the stack, from model architectures to inference engines to hardware.” – Simon Mo, vLLM Project Co-Lead
 
-## SemiAnalysis is Hiring
-
-We are looking for an engineer to join our special projects team. This is a unique opportunity to work on high-visibility special projects such as InferenceMAX™ with support from many industry leaders and CEOs. If you’re passionate about performance engineering, system reliability, and want to work at the intersection of hardware and software, this is a rare chance to make industry wide impact.
-What you’ll work on:
-- Building and running large-scale benchmarks across multiple vendors (AMD, NVIDIA, TPU, Trainium, etc.)
-- Designing reproducible CI/CD pipelines to automate benchmarking workflows
-- Ensuring reliability and scalability of systems used by industry partners
-  
-What we’re looking for:
-- Strong skills in Python
-- Background in Site Reliability Engineering (SRE) or systems-level problem solving
-- Experience with CI/CD pipelines and modern DevOps practices
-- Curiosity about GPUs, TPUs, Trainium, multi-cloud, and performance benchmarking
-Link to apply: https://app.dover.com/apply/SemiAnalysis/2a9c8da5-6d59-4ac8-8302-3877345dbce1
-

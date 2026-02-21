@@ -1,4 +1,4 @@
-#  InferenceX™, Open Source Continuous Inference Performance Benchmark & Research Platform
+#  InferenceX™, Open Source Continuous Inference Benchmark & Performance Research Platform
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/SemiAnalysisAI/InferenceX/blob/main/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/SemiAnalysisAI/InferenceX/pulls)

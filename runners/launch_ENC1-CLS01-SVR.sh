@@ -1,11 +1,12 @@
 #!/usr/bin/bash
 
-# Launch script for ENC1-CLS01-SVR03 (local MI300X runner)
-# Paths adapted for device: /mnt/nvme8n1p1 for cache, /workspace for build
+# Launch script for ENC1-CLS01-SVR_* runners (SVR03, SVR04, etc.)
+# Use runner names like ENC1-CLS01-SVR_03, ENC1-CLS01-SVR_04 so they map to this script
+# Override HF_HUB_CACHE_MOUNT per runner via .env if paths differ
 
 sudo sh -c 'echo 0 > /proc/sys/kernel/numa_balancing'
 
-# HF cache: use NVMe storage, override via HF_HUB_CACHE_MOUNT env if needed
+# HF cache: override via HF_HUB_CACHE_MOUNT env for device-specific path
 HF_HUB_CACHE_MOUNT="${HF_HUB_CACHE_MOUNT:-/mnt/nvme1n1p1/huggingface/hub/}"
 mkdir -p "$HF_HUB_CACHE_MOUNT"
 PORT=8888

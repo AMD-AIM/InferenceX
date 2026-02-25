@@ -18,9 +18,9 @@ fi
 hf download "$MODEL"
 
 # Use /tmp (not mounted) to avoid polluting workspace with root-owned files
-WORK_DIR=${WORK_DIR:-/tmp/sgl-workspace}
+SGLANG_WORK_DIR=${SGLANG_WORK_DIR:-/tmp/sgl-workspace}
 pip uninstall amd-aiter -y
-cd $WORK_DIR
+cd $SGLANG_WORK_DIR
 rm -rf aiter
 git clone --recursive https://github.com/ROCm/aiter.git
 cd aiter

@@ -40,6 +40,7 @@ b200-multinode:
 - 'b200-dgxc-slurm_7'
 - 'b200-dgxc-slurm_8'
 mi300x:
+- 'ENC1-CLS01-SVR03'
 - 'mi300x-amd_0'
 - 'mi300x-amd_1'
 - 'mi300x-amd_2'

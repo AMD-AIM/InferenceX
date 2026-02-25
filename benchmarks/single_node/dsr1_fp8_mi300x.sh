@@ -17,6 +17,16 @@ fi
 
 hf download "$MODEL"
 
+WORK_DIR=${WORK_DIR:-/sgl-workspace}
+pip uninstall amd-aiter -y
+cd $WORK_DIR
+rm -rf aiter
+git clone --recursive https://github.com/ROCm/aiter.git
+cd aiter
+git fetch && git reset --hard d2ca5a897
+rm -rf aiter/jit/**.so
+PREBUILD_KERNELS=0 python setup.py develop
+
 # Reference
 # https://rocm.docs.amd.com/en/docs-7.0-rc1/preview/benchmark-docker/inference-sglang-deepseek-r1-fp8.html#run-the-inference-benchmark
 

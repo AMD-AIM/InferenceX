@@ -17,7 +17,8 @@ fi
 
 hf download "$MODEL"
 
-WORK_DIR=${WORK_DIR:-/sgl-workspace}
+# Use /tmp (not mounted) to avoid polluting workspace with root-owned files
+WORK_DIR=${WORK_DIR:-/tmp/sgl-workspace}
 pip uninstall amd-aiter -y
 cd $WORK_DIR
 rm -rf aiter

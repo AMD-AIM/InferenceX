@@ -40,9 +40,9 @@ b200-multinode:
 - 'b200-dgxc-slurm_7'
 - 'b200-dgxc-slurm_8'
 mi300x:
-# ENC1-CLS01-SVR_* share launch_ENC1-CLS01-SVR.sh (use underscore in name)
-- 'ENC1-CLS01-SVR_03'
-- 'ENC1-CLS01-SVR_04'
+# mi300x-amd_* map to launch_mi300x-amd.sh
+- 'mi300x-amd_SVR03'
+- 'mi300x-amd_SVR04'
 - 'mi300x-amd_0'
 - 'mi300x-amd_1'
 - 'mi300x-amd_2'

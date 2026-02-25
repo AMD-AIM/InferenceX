@@ -1,8 +1,14 @@
 #!/usr/bin/bash
 
+# Launch script for ENC1-CLS01-SVR_* runners (SVR03, SVR04, etc.)
+# Use runner names like ENC1-CLS01-SVR_03, ENC1-CLS01-SVR_04 so they map to this script
+# Override HF_HUB_CACHE_MOUNT per runner via .env if paths differ
+
 sudo sh -c 'echo 0 > /proc/sys/kernel/numa_balancing'
 
-HF_HUB_CACHE_MOUNT="/shareddata/hf_hub_cache_$(hostname)/"
+# HF cache: override via HF_HUB_CACHE_MOUNT env for device-specific path
+HF_HUB_CACHE_MOUNT="${HF_HUB_CACHE_MOUNT:-/mnt/nvme1n1p1/huggingface/hub/}"
+mkdir -p "$HF_HUB_CACHE_MOUNT"
 PORT=8888
 
 server_name="bmk-server"
@@ -15,6 +21,7 @@ docker run --rm --ipc=host --shm-size=16g --network=host --name=$server_name \
 -v $GITHUB_WORKSPACE:/workspace/ -w /workspace/ \
 -e HF_TOKEN -e HF_HUB_CACHE -e MODEL -e TP -e CONC -e MAX_MODEL_LEN -e PORT=$PORT \
 -e ISL -e OSL -e PYTHONPYCACHEPREFIX=/tmp/pycache/ -e RANDOM_RANGE_RATIO -e RESULT_FILENAME -e RUN_EVAL -e RUNNER_TYPE \
+-e WORK_DIR=/workspace \
 --entrypoint=/bin/bash \
 $IMAGE \
 benchmarks/single_node/"${EXP_NAME%%_*}_${PRECISION}_mi300x.sh"

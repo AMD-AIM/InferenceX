@@ -49,6 +49,7 @@ PORT=${PORT:-8888}
 set -x
 python3 -m sglang.launch_server \
 --model-path=$MODEL --host=0.0.0.0 --port=$PORT --trust-remote-code \
+--load-format dummy \
 --tensor-parallel-size=$TP \
 --mem-fraction-static=0.8 \
 --cuda-graph-max-bs=128 \

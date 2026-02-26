@@ -17,7 +17,6 @@ fi
 
 hf download "$MODEL"
 
-
 # Reference
 # https://rocm.docs.amd.com/en/docs-7.0-rc1/preview/benchmark-docker/inference-sglang-deepseek-r1-fp8.html#run-the-inference-benchmark
 

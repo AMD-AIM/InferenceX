@@ -8,6 +8,8 @@ mkdir -p "$HF_HUB_CACHE_MOUNT"
 PORT=8888
 
 server_name="bmk-server"
+# Remove leftover bmk-server from previous run so we can reuse the name
+docker rm -f "$server_name" 2>/dev/null || true
 
 set -x
 docker run --rm --ipc=host --shm-size=16g --network=host --name=$server_name \

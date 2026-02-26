@@ -161,7 +161,8 @@ else
     salloc --partition=$PARTITION --gres=gpu:$TP --cpus-per-task=128 --time=180 --no-shell --job-name="$RUNNER_NAME"
     JOB_ID=$(squeue --name="$RUNNER_NAME" -h -o %A | head -n1)
 
-    srun --jobid=$JOB_ID bash -c "docker stop \$(docker ps -a -q)"
+    # Remove leftover bmk-server from previous run so we can reuse the name (targeted cleanup only)
+    srun --jobid=$JOB_ID bash -c "docker rm -f bmk-server 2>/dev/null || true"
 
     if [[ "$FRAMEWORK" == "atom" ]]; then
         srun --jobid=$JOB_ID bash -c "rm $SQUASH_FILE"

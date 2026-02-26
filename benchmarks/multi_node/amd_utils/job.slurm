@@ -328,10 +328,7 @@ set -euo pipefail
 
 echo \"Rank \$SLURM_PROCID on \$(hostname)\"
 
-# Pre-clean (idempotent)
-sudo docker ps -aq --filter \"name=^container_sbatch_\" | xargs -r sudo docker rm -f || true
-sudo docker ps -aq | xargs -r sudo docker stop || true
-
+# Do not stop/remove existing containers - only current job's container at end
 exec sudo docker run --rm \
     --init \
     --stop-timeout 10 \
@@ -402,4 +399,5 @@ if [[ \$DOCKER_EXIT_CODE -ne 0 ]]; then
 fi
 "
 
+# Remove current job's container only (do not touch other containers/images)
 srun --nodelist="$SELECTED_NODELIST_SRUN" bash -c 'sudo docker rm -f $DOCKER_CONT_NAME 2>/dev/null || true'

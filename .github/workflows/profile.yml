@@ -118,18 +118,7 @@ jobs:
     steps:
       - name: Resource cleanup
         run: |
-          # Cleanup Docker resources
-          if command -v docker >/dev/null 2>&1 && docker info >/dev/null 2>&1; then
-            echo "[Docker] Cleaning up resources ..."
-            docker ps -aq | xargs -r docker rm -f
-            docker network prune -f
-            while [ -n "$(docker ps -aq)" ]; do
-              docker ps -a
-              sleep 5
-            done
-          fi
-
-          # Cleanup SLURM resources
+          # Cleanup SLURM resources (Docker container/image deletion disabled)
           if command -v squeue >/dev/null 2>&1; then
             if [[ "${{ runner.name }}" == mi355x-amds* || "${{ runner.name }}" == gb200-nv* || "${{ runner.name }}" == gb300-nv* || "${{ runner.name }}" == h100-dgxc-slurm* || "${{ runner.name }}" == h200-dgxc-slurm* || "${{ runner.name }}" == b200-dgxc-slurm* ]]; then
               echo "[Slurm] Cleaning up jobs with name: ${{ runner.name }} ..."

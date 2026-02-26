@@ -1,9 +1,5 @@
 #!/usr/bin/bash
 
-# Launch script for ENC1-CLS01-SVR_* runners (SVR03, SVR04, etc.)
-# Use runner names like ENC1-CLS01-SVR_03, ENC1-CLS01-SVR_04 so they map to this script
-# Override HF_HUB_CACHE_MOUNT per runner via .env if paths differ
-
 sudo sh -c 'echo 0 > /proc/sys/kernel/numa_balancing'
 
 # HF cache: override via HF_HUB_CACHE_MOUNT env for device-specific path

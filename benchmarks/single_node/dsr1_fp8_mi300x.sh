@@ -17,16 +17,6 @@ fi
 
 hf download "$MODEL"
 
-# Use /tmp (not mounted) to avoid polluting workspace with root-owned files
-SGLANG_WORK_DIR=${SGLANG_WORK_DIR:-/sgl-workspace}
-pip uninstall amd-aiter -y
-cd $SGLANG_WORK_DIR
-rm -rf aiter
-git clone --recursive https://github.com/ROCm/aiter.git
-cd aiter
-git fetch && git reset --hard d2ca5a897
-rm -rf aiter/jit/**.so
-PREBUILD_KERNELS=0 python setup.py develop
 
 # Reference
 # https://rocm.docs.amd.com/en/docs-7.0-rc1/preview/benchmark-docker/inference-sglang-deepseek-r1-fp8.html#run-the-inference-benchmark
@@ -75,8 +65,7 @@ run_benchmark_serving \
     --num-prompts $(( $CONC * 10 )) \
     --max-concurrency "$CONC" \
     --result-filename "$RESULT_FILENAME" \
-    --result-dir /workspace/ \
-    --bench-serving-dir /workspace
+    --result-dir /workspace/
 
 # After throughput, run evaluation only if RUN_EVAL is true
 if [ "${RUN_EVAL}" = "true" ]; then

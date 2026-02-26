@@ -66,6 +66,9 @@ b200-multinode:
 - 'b200-dgxc-slurm_7'
 - 'b200-dgxc-slurm_8'
 mi300x:
+# mi300x-amd_* map to launch_mi300x-amd.sh
+- 'mi300x-amd_SVR03'
+- 'mi300x-amd_SVR04'
 - 'mi300x-amd_0'
 - 'mi300x-amd_1'
 - 'mi300x-amd_2'
@@ -91,6 +94,7 @@ mi355x:
 - 'mi355x-amds_6'
 - 'mi355x-amds_7'
 - 'mi355x-amds_8'
+- 'mi355x-amds_n06-05'
 mi355x-disagg:
 - 'mi355x-amds_0'
 - 'mi355x-amds_1'

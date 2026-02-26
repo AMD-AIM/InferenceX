@@ -2,7 +2,9 @@
 
 sudo sh -c 'echo 0 > /proc/sys/kernel/numa_balancing'
 
-HF_HUB_CACHE_MOUNT="/shareddata/hf_hub_cache_$(hostname)/"
+# HF cache: override via HF_HUB_CACHE_MOUNT env for device-specific path
+HF_HUB_CACHE_MOUNT="${HF_HUB_CACHE_MOUNT:-/mnt/nvme1n1p1/huggingface/hub/}"
+mkdir -p "$HF_HUB_CACHE_MOUNT"
 PORT=8888
 
 server_name="bmk-server"

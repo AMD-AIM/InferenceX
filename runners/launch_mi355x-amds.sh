@@ -211,6 +211,8 @@ else
 
         export VLLM_CACHE_ROOT="/it-share/gharunners/.cache/vllm"
 
+        # Reinstall aiter/sglang in /sgl-workspace when AITER_REF or SGLANG_REF are set, then run benchmark
+        RUN_CMD="bash benchmarks/single_node/patch_sgl_components.sh && exec bash $BENCHMARK_SCRIPT"
         srun --jobid=$JOB_ID \
             --container-image=$SQUASH_FILE \
             --container-mounts=$WORKSPACE:/workspace/,$HF_HUB_CACHE_MOUNT:$HF_HUB_CACHE \
@@ -218,7 +220,7 @@ else
             --container-writable \
             --container-workdir=/workspace/ \
             --no-container-entrypoint --export=ALL \
-            bash "$BENCHMARK_SCRIPT"
+            bash -c "$RUN_CMD"
 
         scancel $JOB_ID
 
@@ -241,6 +243,8 @@ else
         docker rm -f "$server_name" 2>/dev/null || true
 
         set -x
+        # Reinstall aiter/sglang in /sgl-workspace when AITER_REF or SGLANG_REF are set, then run benchmark
+        RUN_CMD="bash benchmarks/single_node/patch_sgl_components.sh && exec bash $BENCHMARK_SCRIPT"
         docker run --rm --ipc=host --shm-size=16g --network=host --name=$server_name \
             --privileged --cap-add=CAP_SYS_ADMIN --device=/dev/kfd --device=/dev/dri --device=/dev/mem \
             --cap-add=SYS_PTRACE --security-opt seccomp=unconfined \
@@ -251,8 +255,9 @@ else
             -e RANDOM_RANGE_RATIO -e RESULT_FILENAME -e RUN_EVAL -e RUNNER_TYPE \
             -e PROFILE -e SGLANG_TORCH_PROFILER_DIR -e VLLM_TORCH_PROFILER_DIR -e VLLM_RPC_TIMEOUT \
             -e SPEC_DECODING -e DISAGG \
+            -e AITER_REMOTE -e AITER_REF -e SGLANG_REMOTE -e SGLANG_REF \
             --entrypoint=/bin/bash \
             "$IMAGE" \
-            "$BENCHMARK_SCRIPT"
+            -c "$RUN_CMD"
     fi
 fi

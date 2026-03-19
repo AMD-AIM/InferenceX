@@ -20,6 +20,8 @@ hf download "$MODEL"
 SERVER_LOG=/workspace/server.log
 PORT=${PORT:-8888}
 
+export SGLANG_FUSED_QK_NORM_ROPE_CACHE_PTS_QUANT_SHUFFLE=1
+
 # Start GPU monitoring (power, temperature, clocks every second)
 start_gpu_monitor
 
@@ -30,6 +32,7 @@ python3 -m sglang.launch_server \
     --port $PORT \
     --tensor-parallel-size $TP \
     --trust-remote-code \
+    --enable-fused-qk-norm-rope \
     --mem-fraction-static 0.8 > $SERVER_LOG 2>&1 &
 
 SERVER_PID=$!

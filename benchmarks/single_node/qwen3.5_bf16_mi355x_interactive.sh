@@ -23,7 +23,7 @@ set -e
 TP=8
 SL_LIST=("1024,1024" "8192,1024" "1024,8192")
 CONC_LIST=(8)
-RESULT_DIR="/workspace/"
+RESULT_DIR="/home/zhenchen/projects/InferenceX/"
 
 usage() {
     echo "Usage: $0 [OPTIONS]"
@@ -37,7 +37,7 @@ usage() {
     echo "Examples:"
     echo "  $0"
     echo "  $0 -tp 8 -sl 1024,1024 8192,1024 -conc 8 16 32"
-    echo "  $0 -result-dir /workspace/results"
+    echo "  $0 -result-dir /home/zhenchen/projects/InferenceX/results"
     exit 1
 }
 
@@ -122,20 +122,36 @@ echo "Config: TP=$TP, SL=${SL_LIST[*]}, CONC=${CONC_LIST[*]}, RESULT_DIR=$RESULT
 
 hf download "$MODEL"
 
-SERVER_LOG=/workspace/server.log
+SERVER_LOG=/home/zhenchen/projects/InferenceX/server.log
 PORT=${PORT:-8888}
+MEM_FRAC_STATIC=0.82
+CHUNKED_PREFILL_SIZE=32768
+MAX_PREFILL_TOKENS=32768
+CUDA_GRAPH_MAX_BATCH_SIZE=$CONC
+MAX_RUNNING_REQUESTS=128
+CONTEXT_LENGTH=$((ISL + OSL + 20))
 
 # Start GPU monitoring
 start_gpu_monitor
 
-python3 -m sglang.launch_server \
+set -x
+PYTHONNOUSERSITE=1 python3 -m sglang.launch_server \
     --attention-backend triton \
     --model-path $MODEL \
     --host=0.0.0.0 \
     --port $PORT \
     --tensor-parallel-size $TP \
     --trust-remote-code \
-    --mem-fraction-static 0.8 > $SERVER_LOG 2>&1 &
+    --mem-fraction-static $MEM_FRAC_STATIC \
+    --chunked-prefill-size $CHUNKED_PREFILL_SIZE \
+    --max-prefill-tokens $MAX_PREFILL_TOKENS \
+    --cuda-graph-max-batch-size $CUDA_GRAPH_MAX_BATCH_SIZE \
+    --max-running-requests $MAX_RUNNING_REQUESTS \
+    --enable-aiter-allreduce-fusion \
+    --scheduler-recv-interval $SCHEDULER_RECV_INTERVAL \
+    --tokenizer-worker-num 6 \
+    --stream-interval 30 \
+    --context-length $CONTEXT_LENGTH > $SERVER_LOG 2>&1 &
 
 SERVER_PID=$!
 
@@ -147,6 +163,12 @@ for sl_pair in "${SL_LIST[@]}"; do
     for CONC in "${CONC_LIST[@]}"; do
         RESULT_FILENAME="result_TP${TP}_CONC${CONC}_ISL${ISL}_OSL${OSL}.json"
         echo "Running: ISL=$ISL OSL=$OSL CONC=$CONC -> $RESULT_FILENAME"
+
+        if [[ $CONC -ge 16 ]]; then
+            SCHEDULER_RECV_INTERVAL=30
+        else
+            SCHEDULER_RECV_INTERVAL=10
+        fi
 
         run_benchmark_serving \
             --model "$MODEL" \

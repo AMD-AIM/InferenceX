@@ -16,6 +16,22 @@ on:
                 description: "Ref (branch/sha) to checkout for generating configs"
                 required: false
                 type: string
+            aiter-repo:
+                description: "Repo URL to reinstall aiter from (e.g. https://github.com/user/aiter.git)"
+                required: false
+                type: string
+            aiter-ref:
+                description: "Branch or commit for aiter"
+                required: false
+                type: string
+            sglang-repo:
+                description: "Repo URL to reinstall sglang from (e.g. https://github.com/user/sglang)"
+                required: false
+                type: string
+            sglang-ref:
+                description: "Branch or commit for sglang"
+                required: false
+                type: string
     workflow_call:
         inputs:
             generate-cli-command:
@@ -28,6 +44,22 @@ on:
                 type: string
             ref:
                 description: "Ref (branch/sha) to checkout for generating configs"
+                required: false
+                type: string
+            aiter-repo:
+                description: "Repo URL to reinstall aiter from"
+                required: false
+                type: string
+            aiter-ref:
+                description: "Branch or commit for aiter"
+                required: false
+                type: string
+            sglang-repo:
+                description: "Repo URL to reinstall sglang from"
+                required: false
+                type: string
+            sglang-ref:
+                description: "Branch or commit for sglang"
                 required: false
                 type: string
 
@@ -124,7 +156,11 @@ jobs:
             spec-decoding: ${{ matrix.config.spec-decoding }}
             disagg: ${{ matrix.config.disagg }}
             run-eval: ${{ matrix.config.run-eval }}
-            ref: ${{ inputs.ref }}
+            ref: ${{ inputs.ref || github.event.inputs.ref }}
+            aiter-remote: ${{ inputs.aiter-repo || github.event.inputs['aiter-repo'] }}
+            aiter-ref: ${{ inputs.aiter-ref || github.event.inputs['aiter-ref'] }}
+            sglang-remote: ${{ inputs.sglang-repo || github.event.inputs['sglang-repo'] }}
+            sglang-ref: ${{ inputs.sglang-ref || github.event.inputs['sglang-ref'] }}
 
     collect-results:
         needs: [test-sweep-multi-node, test-sweep-single-node]

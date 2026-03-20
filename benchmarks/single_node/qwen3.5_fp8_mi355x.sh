@@ -50,7 +50,7 @@ PYTHONNOUSERSITE=1 python3 -m sglang.launch_server \
     --mem-fraction-static $MEM_FRAC_STATIC \
     --chunked-prefill-size $CHUNKED_PREFILL_SIZE \
     --max-prefill-tokens $MAX_PREFILL_TOKENS \
-    --cuda-graph-max-batch-size $CUDA_GRAPH_MAX_BATCH_SIZE \
+    --cuda-graph-max-bs $CUDA_GRAPH_MAX_BATCH_SIZE \
     --max-running-requests $MAX_RUNNING_REQUESTS \
     --enable-aiter-allreduce-fusion \
     --scheduler-recv-interval $SCHEDULER_RECV_INTERVAL \

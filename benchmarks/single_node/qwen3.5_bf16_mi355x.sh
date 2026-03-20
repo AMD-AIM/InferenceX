@@ -19,6 +19,19 @@ hf download "$MODEL"
 
 SERVER_LOG=/workspace/server.log
 PORT=${PORT:-8888}
+MEM_FRAC_STATIC=0.82
+CHUNKED_PREFILL_SIZE=32768
+MAX_PREFILL_TOKENS=32768
+CUDA_GRAPH_MAX_BATCH_SIZE=$CONC
+MAX_RUNNING_REQUESTS=128
+CONTEXT_LENGTH=$((ISL + OSL + 20))
+
+# Default: recv every ~10 requests; if CONC ≥ 16, relax to ~30 requests between scheduler recv polls.
+if [[ $CONC -ge 16 ]]; then
+  SCHEDULER_RECV_INTERVAL=30
+else
+  SCHEDULER_RECV_INTERVAL=10
+fi
 
 # Start GPU monitoring (power, temperature, clocks every second)
 start_gpu_monitor
@@ -26,15 +39,24 @@ start_gpu_monitor
 export SGLANG_FUSED_QK_NORM_ROPE_CACHE_PTS_QUANT_SHUFFLE=1
 
 cd /sgl-workspace/sglang
-python3 -m sglang.launch_server \
+set -x
+PYTHONNOUSERSITE=1 python3 -m sglang.launch_server \
     --attention-backend triton \
     --model-path $MODEL \
     --host=0.0.0.0 \
     --port $PORT \
     --tensor-parallel-size $TP \
     --trust-remote-code \
-    --enable-fused-qk-norm-rope \
-    --mem-fraction-static 0.8 > $SERVER_LOG 2>&1 &
+    --mem-fraction-static $MEM_FRAC_STATIC \
+    --chunked-prefill-size $CHUNKED_PREFILL_SIZE \
+    --max-prefill-tokens $MAX_PREFILL_TOKENS \
+    --cuda-graph-max-batch-size $CUDA_GRAPH_MAX_BATCH_SIZE \
+    --max-running-requests $MAX_RUNNING_REQUESTS \
+    --enable-aiter-allreduce-fusion \
+    --scheduler-recv-interval $SCHEDULER_RECV_INTERVAL \
+    --tokenizer-worker-num 6 \
+    --stream-interval 30 \
+    --context-length $CONTEXT_LENGTH > $SERVER_LOG 2>&1 &
 
 SERVER_PID=$!
 cd -

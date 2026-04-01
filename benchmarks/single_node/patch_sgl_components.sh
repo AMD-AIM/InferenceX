@@ -23,13 +23,13 @@ fi
 
 if [[ -n "$AITER_REF" ]]; then
     pip uninstall amd-aiter -y
-    cd "$work_dir"
-    rm -rf aiter
-    git clone --recursive "$aiter_remote" aiter
-    cd aiter
+    cd "$work_dir/aiter"
+    git remote set-url origin "$aiter_remote" 2>/dev/null || git remote add origin "$aiter_remote"
     git fetch origin "$aiter_ref" 2>/dev/null || git fetch origin
     git checkout "$aiter_ref" 2>/dev/null || git reset --hard "origin/$aiter_ref" 2>/dev/null || git reset --hard "$aiter_ref"
     rm -rf aiter/jit/*.so 2>/dev/null || true
+    rm -rf aiter/jit/build 2>/dev/null || true
+    rm -rf aiter/jit/dist 2>/dev/null || true
     PREBUILD_KERNELS=0 python setup.py develop
     echo "aiter ($aiter_ref) installed from $aiter_remote"
 else

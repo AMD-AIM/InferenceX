@@ -30,6 +30,7 @@ if [[ -n "$AITER_REF" ]]; then
     rm -rf aiter/jit/*.so 2>/dev/null || true
     rm -rf aiter/jit/build 2>/dev/null || true
     rm -rf aiter/jit/dist 2>/dev/null || true
+    git submodule update --init --force 3rdparty/composable_kernel 2>/dev/null || true
     PREBUILD_KERNELS=0 python setup.py develop
     echo "aiter ($aiter_ref) installed from $aiter_remote"
 else

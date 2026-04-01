@@ -67,6 +67,22 @@ on:
         description: "Git ref (branch/sha) to checkout"
         required: false
         type: string
+      aiter-remote:
+        description: "Repo URL to reinstall aiter from"
+        required: false
+        type: string
+      aiter-ref:
+        description: "Branch or commit for aiter"
+        required: false
+        type: string
+      sglang-remote:
+        description: "Repo URL to reinstall sglang from"
+        required: false
+        type: string
+      sglang-ref:
+        description: "Branch or commit for sglang"
+        required: false
+        type: string
 
 env:
   RANDOM_RANGE_RATIO: 0.8
@@ -91,6 +107,10 @@ env:
   EVAL_ONLY: ${{ inputs.eval-only }}
   PYTHONDONTWRITEBYTECODE: '1'
   PYTHONPYCACHEPREFIX: /tmp/inferencex-pycache
+  AITER_REMOTE: ${{ inputs.aiter-remote }}
+  AITER_REF: ${{ inputs.aiter-ref }}
+  SGLANG_REMOTE: ${{ inputs.sglang-remote }}
+  SGLANG_REF: ${{ inputs.sglang-ref }}
 
 permissions:
   contents: read
